@@ -60,9 +60,9 @@ int main(){
                 fclose(archivo);
                 exit(0);
             }
-		else{
-		sleep(3);
-       } }
+		else
+		wait(1);
+        }
         else {
             switch( i ){
                 case 1:
@@ -79,7 +79,7 @@ int main(){
                         if(  cub[ pos ] < cub[ arr[i] ] )
                             pos=arr[i];
                     }
-                    printf("\n repetidos=%d valor=%d \n",cub[pos],pos);
+                  printf("\n la moda es %d y se repite %d veces \n",pos,cub[pos]);
               	    exit(1);
 	 	    break;
                 case 2:
