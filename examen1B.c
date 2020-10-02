@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-int arr[110];
+int arr[1010];
 
 int compare(const void* a, const void* b){
 	const int* x = (int*) a;
@@ -14,24 +14,43 @@ int compare(const void* a, const void* b){
 		return -1;
 	return 0;
 }
+int bin(int ini,int fin,int val){
+	while( ini<=fin ){
+		int mit=(ini+fin)/2;
+//printf("%d %d %d=%d\n",ini,mit,fin,arr[mit]);
+		if( arr[mit]==val )
+		return mit;
+		if( arr[mit]>val )
+			fin=mit-1;
+		else
+			ini=mit+1;
 
-int n=200;
+	}
+return -1;
+
+}
+int n=100;
 int cub[101010];
 
 int main(){
-    int fin;
+    int val;
     FILE *archivo;
     int mini;
       srand ( time(NULL) );
     for(int i=0;i<n;i++)
         arr[i]=( rand() )%200+1;
+  for(int i=0;i<n;i++)
+           printf(" %d",arr[i]);
 
+                    printf("\n dar el valor que buscas\n");
+                    scanf("%d",&val);
 
     for(int i=1;i<=5;i++){
         int id=fork();
         if( id>0 ){
             if( i==5 ){
-                archivo=fopen("min.txt","r");
+		printf("proceso padre\n");
+              archivo=fopen("min.txt","r");
                 int res,t1;
                 fscanf(archivo,"%d",&res);
                 fscanf(archivo,"%d",&t1);
@@ -41,18 +60,18 @@ int main(){
                 fclose(archivo);
                 exit(0);
             }
-		else
-		sleep(10);
-        }
+		else{
+		sleep(3);
+       } }
         else {
             switch( i ){
                 case 1:
 			printf("proceso %d \n",i);
-
+                  
+                    printf("\n arreglo ordenado \n");
+                    qsort(arr,n,sizeof(int),compare   );
                     for(int i=0;i<n;i++)
                         printf(" %d",arr[i]);
-                    printf("\n antees \n");
-                    qsort(arr,n,sizeof(int),compare   );
                     int pos=0;
                     arr[0]=0;
                     for(int i=0;i<n;i++){
@@ -60,18 +79,18 @@ int main(){
                         if(  cub[ pos ] < cub[ arr[i] ] )
                             pos=arr[i];
                     }
-                    printf("repetidos=%d valor=%d \n",cub[pos],pos);
+                    printf("\n repetidos=%d valor=%d \n",cub[pos],pos);
               	    exit(1);
 	 	    break;
                 case 2:
 			printf("proceso %d \n",i);
-                    fin=0;
-                    printf("\n dar el valor que buscas\n");
-                    scanf("%d",&fin);
-///	        printf("fin=%d",fin) ;       
-		    int *res= bsearch(&fin,arr,n,sizeof(int),compare);
-                           printf("\n el %d esta en el arreglo",*res);
-           
+                   qsort(arr,n,sizeof(int),compare   );
+	        printf("buscamos a %d\n ",val) ;       
+		    int res= bin(0,n-1,val);
+			if(res>=0)
+                           printf("\n  %d esta en la posicion %d \n",val,res);
+			else
+				printf("\n%d no se encuentra \n",val) ;          
            
                 	exit(1);
 		break;
@@ -84,7 +103,7 @@ int main(){
                         if( arr[i]<mini )
                             mini=arr[i];
 
-                    printf("\nm1=%d\n",mini);
+                    printf("\nel valor minimo en la primer mitad es %d\n",mini);
                     fprintf(archivo,"%d ",mini);
                     fclose(archivo);
 			return(0);
@@ -98,7 +117,7 @@ int main(){
                         if( arr[i]<mini )
                             mini=arr[i];
 
-                    printf("\nm2=%d\n",mini);
+                    printf("\nel valor minimo en la segunda mitad es %d\n",mini);
                     fprintf(archivo,"%d ",mini);
                     fclose(archivo);
 			return(0);
