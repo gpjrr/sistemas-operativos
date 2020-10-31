@@ -5,9 +5,10 @@
 #include <math.h>
 int quo;
 int pro[10],n,work;
-int main (){
     int fd1[2];
     int fd2[2];
+
+limpiar (){
     if( pipe( fd1 )==-1 ){
         printf("error al crear la pipa #1\n");
         return 1;
@@ -16,6 +17,8 @@ int main (){
         printf("error al crear la pipa #2\n");
         return 1;
     }
+}
+int main (){
 
 
     printf("da el valor del quantum entre 1 y 10 \n");
@@ -35,7 +38,7 @@ int main (){
     while( n ){
         for(int i=1;i<=4;i++)
             if( pro[i] ){
-
+                limpiar();
                 int id= fork();
                 if( id>0 ){
                     close( fd1[0] );
@@ -60,12 +63,13 @@ int main (){
                     close( fd1[1] );
                     read( fd1[0],&tra,sizeof( tra ) );
                     close( fd1[0] );
-                    printf("inicia el proceso#i duracion=%d\n",i,tra);
+                    printf("inicia el proceso#%d duracion=%d\n",i,tra);
                     int lim=tra;
-                    if(quo<tra) lim=quo;
+                    if(quo<tra)
+                        lim=quo;
                     for(int i=1;i<=lim;i++)
                         tra--;
-                    printf("finaliza el proceso#i duracion=%d\n",i,tra);
+                    //printf("finaliza el proceso#%d duracion=%d\n",i,tra);
                     close( fd2[0] );
                     write( fd2[1],&tra,sizeof( tra ) );
                     close( fd2[1] );
@@ -79,4 +83,5 @@ int main (){
 
     return 0;
 }
+
 
