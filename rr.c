@@ -54,9 +54,7 @@ int main (){
                     pro[i]=tem;
                     if( tem==0 )
                         n--;
-                    for(int i=1;i<=4;i++)
-                        printf("proceso#%d tiempo=%d\n",i,pro[i]);
-                    printf("trabajo acumulado %d\n",work);
+                
                 }
                 else{
                     int tra=0;
@@ -78,8 +76,10 @@ int main (){
 
             }
 
-    }
-
+	 for(int i=1;i<=4;i++)	
+                        printf("proceso#%d tiempo=%d\n",i,pro[i]);
+                    printf("trabajo acumulado %d\n",work);    
+}
 
     return 0;
 }
